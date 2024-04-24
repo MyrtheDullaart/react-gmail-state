@@ -6,17 +6,8 @@ import './styles/App.css'
 
 function App() {
   const [emails, setEmails] = useState(initialEmails)
-  const [isRead, setIsRead] = useState(false)
-  
-  console.log(emails)
 
-  let emailClassName = "email"
-
-  if (isRead) { 
-    emailClassName += " read"
-  } else {
-    emailClassName += " unread"
-  }
+  console.log(emails)  
 
   return (
     <div className="app">
@@ -51,19 +42,26 @@ function App() {
       </nav>
       <main className="emails">{emails.map((email, index) => {
         return (
-          <li className={emailClassName} key={index}>
+          <li className={`email ${email.read ? 'read' : 'unread'}`} key={index}>
             <div className="select">
             <input
               className="select-checkbox"
               type="checkbox"
               onClick={() => {
-                setIsRead(!isRead)
-                }}/>
+                email.read = !email.read
+                setEmails([...emails])
+              }}
+              checked={email.read}/>
             </div>
             <div className="star">
             <input
               className="star-checkbox"
               type="checkbox"
+              onClick={() => {
+                email.starred = !email.starred
+                setEmails([...emails])
+              }}
+              checked={email.starred}
             />
             </div>
             <div className="sender">{email.sender}</div>
