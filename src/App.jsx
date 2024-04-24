@@ -7,13 +7,22 @@ import './styles/App.css'
 function App() {
   const [emails, setEmails] = useState(initialEmails)
   const [showReadEmails, setShowReadEmails] = useState(true)
+  const [currentTab, setCurrentTab] = useState("inbox")
 
   const unReadEmails = emails.filter(e => !e.read)
+  const starredEmails = emails.filter(e => e.starred)
+  const starredUnreadEmails = emails.filter(e => e.starred && !e.read)
   let displayEmails = emails
 
-  if (!showReadEmails) {
+  if (currentTab === "inbox" && showReadEmails) {
+    displayEmails = emails
+  } else if (currentTab === "inbox" && !showReadEmails) {
     displayEmails = unReadEmails
-  } 
+  } else if (currentTab === "starred" && !showReadEmails) {
+    displayEmails = starredUnreadEmails
+  } else if (currentTab === "starred") {
+    displayEmails = starredEmails
+  }
 
   return (
     <div className="app">
@@ -21,18 +30,22 @@ function App() {
       <nav className="left-menu">
         <ul className="inbox-list">
           <li
-            className="item active"
-            // onClick={() => {}}
+            className={`item ${currentTab === "inbox" ? 'active' : ''}`}
+            onClick={() => {
+              setCurrentTab("inbox")
+            }}
           >
             <span className="label">Inbox</span>
-            <span className="count">?</span>
+            <span className="count">{emails.length}</span>
           </li>
           <li
-            className="item"
-            // onClick={() => {}}
+            className={`item ${currentTab === "starred" ? 'active' : ''}`}
+            onClick={() => {
+              setCurrentTab("starred")
+            }}
           >
             <span className="label">Starred</span>
-            <span className="count">?</span>
+            <span className="count">{starredEmails.length}</span>
           </li>
 
           <li className="item toggle">
