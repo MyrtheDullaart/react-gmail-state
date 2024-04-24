@@ -9,17 +9,13 @@ function App() {
   const [showReadEmails, setShowReadEmails] = useState(true)
   const [currentTab, setCurrentTab] = useState("inbox")
 
-  const unReadEmails = emails.filter(e => !e.read)
   const starredEmails = emails.filter(e => e.starred)
-  const starredUnreadEmails = emails.filter(e => e.starred && !e.read)
   let displayEmails = emails
 
-  if (currentTab === "inbox" && showReadEmails) {
-    displayEmails = emails
-  } else if (currentTab === "inbox" && !showReadEmails) {
-    displayEmails = unReadEmails
+  if (currentTab === "inbox" && !showReadEmails) {
+    displayEmails = emails.filter(e => !e.read)
   } else if (currentTab === "starred" && !showReadEmails) {
-    displayEmails = starredUnreadEmails
+    displayEmails = emails.filter(e => e.starred && !e.read)
   } else if (currentTab === "starred") {
     displayEmails = starredEmails
   }
