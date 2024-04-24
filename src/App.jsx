@@ -6,8 +6,14 @@ import './styles/App.css'
 
 function App() {
   const [emails, setEmails] = useState(initialEmails)
+  const [showReadEmails, setShowReadEmails] = useState(true)
 
-  console.log(emails)  
+  const unReadEmails = emails.filter(e => !e.read)
+  let displayEmails = emails
+
+  if (!showReadEmails) {
+    displayEmails = unReadEmails
+  } 
 
   return (
     <div className="app">
@@ -34,13 +40,15 @@ function App() {
             <input
               id="hide-read"
               type="checkbox"
-              checked={false}
-              // onChange={() => {}}
+              checked={!showReadEmails}
+              onChange={() => {
+                setShowReadEmails(!showReadEmails)
+              }}
             />
           </li>
         </ul>
       </nav>
-      <main className="emails">{emails.map((email, index) => {
+      <main className="emails">{displayEmails.map((email, index) => {
         return (
           <li className={`email ${email.read ? 'read' : 'unread'}`} key={index}>
             <div className="select">
